@@ -224,11 +224,16 @@ All experiments were conducted using **Kaggle Notebooks**.
 ---
 
 # 📁 Repository Structure
-MLP-Project-t12026
+MLP-Project-t12026/
 │
-├── FinalNotebook.ipynb
+├── notebooks/
+│ └── FinalNotebook.ipynb
+│
+├── submissions/
+│ └── final_submission.csv
+│
 ├── README.md
-
+└── LICENSE
 
 ---
 
