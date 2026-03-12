@@ -1,254 +1,264 @@
-📘 Machine Learning Practice Project – Comment Category Prediction
-📂 Repository
+# 📘 Machine Learning Practice Project – Comment Category Prediction
 
-MLP-Project-t12026
+## 📂 Repository
+**MLP-Project-t12026**
 
-This repository contains the implementation of my Machine Learning Practice Project (MLP) for the IIT Madras BS Degree in Data Science and Applications. The objective of this project is to build machine learning models capable of automatically classifying online comments into predefined moderation categories.
+This repository contains the implementation of my **Machine Learning Practice Project (MLP)** for the **IIT Madras BS Degree in Data Science and Applications**. The objective of this project is to build machine learning models capable of automatically classifying online comments into predefined moderation categories.
 
-The project combines Natural Language Processing (NLP) techniques with tabular feature engineering to extract meaningful patterns from user-generated text and associated metadata.
+The project combines **Natural Language Processing (NLP)** techniques with **tabular feature engineering** to extract meaningful patterns from user-generated text and associated metadata.
 
-🎯 Project Objective
+---
 
-Online platforms receive a large volume of user comments every day. Moderating these comments manually can be challenging and time-consuming. The goal of this project is to develop a machine learning system that can automatically predict the category assigned to each comment by a moderation system.
+# 🎯 Project Objective
 
-The task is formulated as a multi-class classification problem, where each comment must be classified into one of four possible categories.
+Online platforms receive a large volume of user comments every day. Moderating these comments manually can be challenging and time-consuming. The goal of this project is to develop a machine learning system that can **automatically predict the category assigned to each comment by a moderation system**.
+
+The task is formulated as a **multi-class classification problem**, where each comment must be classified into one of four possible categories.
 
 The project explores several machine learning techniques and evaluates their effectiveness in predicting comment categories using both textual and metadata features.
 
-📊 Dataset Description
+---
 
-The dataset used in this project consists of user comments along with metadata features that describe various aspects of the comment.
+# 📊 Dataset Description
 
-Main Components of the Dataset
-Feature	Description
-comment	Raw text content of the user comment
-created_date	Timestamp when the comment was posted
-post_id	Identifier linking the comment to a discussion thread
-emoticon_1, emoticon_2, emoticon_3	Indicators representing presence of emoticons
-upvote / downvote	Number of reactions received
-race, religion, gender, disability	Indicators of detected identity references
-if_1, if_2	Internal system features
-label	Target variable representing moderation category
+The dataset used in this project consists of **user comments along with metadata features** that describe various aspects of the comment.
 
-The dataset contains 198,000 training samples and several feature types including:
+### Main Components of the Dataset
 
-Textual data
+| Feature | Description |
+|------|-------------|
+| comment | Raw text content of the user comment |
+| created_date | Timestamp when the comment was posted |
+| post_id | Identifier linking the comment to a discussion thread |
+| emoticon_1 | Indicator of emoticon type 1 |
+| emoticon_2 | Indicator of emoticon type 2 |
+| emoticon_3 | Indicator of emoticon type 3 |
+| upvote | Number of positive reactions |
+| downvote | Number of negative reactions |
+| race | Indicator of detected race-related reference |
+| religion | Indicator of detected religion-related reference |
+| gender | Indicator of detected gender-related reference |
+| disability | Indicator of disability reference |
+| if_1, if_2 | Internal moderation signals |
+| label | Target variable representing moderation category |
 
-Numerical features
+The dataset contains **198,000 training samples** and multiple feature types including:
 
-Categorical variables
+- Textual data
+- Numerical features
+- Categorical features
+- Boolean features
 
-Boolean indicators
+---
 
-🔍 Exploratory Data Analysis (EDA)
+# 🔍 Exploratory Data Analysis (EDA)
 
-Exploratory Data Analysis was performed to understand the structure and characteristics of the dataset.
+Exploratory Data Analysis was conducted to better understand the dataset structure and identify potential patterns.
 
-Key observations include:
+Key insights from the analysis include:
 
-The dataset contains four target classes representing different comment moderation categories.
+- The dataset contains **four moderation categories**.
+- The class distribution is **imbalanced**, with **Label 0 forming the majority (~58%)**.
+- Several categorical columns such as **race, religion, and gender contain missing values**.
+- Comment lengths vary significantly across the dataset.
 
-The class distribution is imbalanced, with Label 0 being the dominant class (~58%).
+Visualization techniques were used to analyze:
 
-Several categorical columns such as race, religion, and gender contain a large number of missing values.
+- Class distribution
+- Comment length distribution
+- Reaction statistics (upvotes and downvotes)
 
-Comment lengths vary widely, indicating that both short and long comments are present.
+These insights guided the feature engineering and modeling approach.
 
-Visualization techniques were used to explore:
+---
 
-Class distribution
+# ⚙️ Data Preprocessing
 
-Comment length distribution
+Data preprocessing was performed to ensure the dataset was suitable for machine learning models.
 
-Reaction statistics (upvotes and downvotes)
+### Text Cleaning
 
-These insights guided the design of preprocessing and modeling strategies.
+The comment text was normalized using the following steps:
 
-⚙️ Data Preprocessing
+- Convert text to lowercase
+- Remove URLs
+- Remove punctuation and special characters
+- Remove extra whitespace
 
-Data preprocessing plays a critical role in preparing the dataset for machine learning models. Several preprocessing steps were implemented.
+This process standardizes textual inputs and reduces noise.
 
-Text Cleaning
+---
 
-The comment text was normalized by:
+### Handling Missing Values
 
-Converting all text to lowercase
+Different strategies were applied based on feature types:
 
-Removing URLs
+- Missing comments were replaced with empty strings.
+- Missing categorical values were encoded appropriately.
 
-Removing special characters and punctuation
+---
 
-Removing extra whitespace
+### Feature Engineering
 
-This process reduces noise and standardizes textual inputs.
+Several additional features were created to capture useful patterns:
 
-Handling Missing Values
+- **Comment length**
+- **Word count**
+- **Vote difference** (`upvote - downvote`)
+- **Total emoticons**
+- **Capital letter count**
 
-Missing values were handled appropriately depending on the feature type:
+These features provide additional behavioral signals that may influence moderation decisions.
 
-Text features were replaced with empty strings.
+---
 
-Categorical features were encoded while treating missing values as a separate category.
+# 🧠 Feature Representation
 
-Feature Engineering
-
-Additional metadata features were created to capture meaningful patterns:
-
-Comment length
-
-Word count
-
-Vote difference (upvote - downvote)
-
-Total emoticons
-
-Ratio of capital letters
-
-These engineered features help capture behavioral and contextual information that may influence moderation decisions.
-
-🧠 Feature Representation
-
-The textual content of comments was converted into numerical features using TF-IDF vectorization.
+Text data was converted into numerical features using **TF-IDF vectorization**.
 
 Two types of TF-IDF representations were used:
 
-Word-Level TF-IDF
+### Word-Level TF-IDF
+Captures semantic information from the comment text.
 
-Captures semantic meaning by analyzing word frequencies.
+### Character-Level TF-IDF
+Captures character patterns and spelling variations that may indicate abusive language.
 
-Character-Level TF-IDF
+The final feature space combines:
 
-Captures spelling patterns and subtle textual signals that may indicate abusive or harmful language.
 
-The final feature representation combines:
+This hybrid representation enables models to learn from both language patterns and user interaction signals.
 
-Text Features (TF-IDF)
-+
-Engineered Metadata Features
+---
 
-This hybrid representation allows models to learn from both language and behavioral signals.
+# 🤖 Machine Learning Models
 
-🤖 Machine Learning Models
+Three different machine learning algorithms were implemented and compared.
 
-Three different machine learning models were trained and compared.
+## 1️⃣ Logistic Regression
 
-1️⃣ Logistic Regression
+Logistic Regression serves as a strong baseline for high-dimensional text data.
 
-Logistic Regression serves as a strong linear baseline model for high-dimensional text data.
+**Advantages**
 
-Advantages:
+- Fast training
+- Works well with sparse TF-IDF matrices
+- Interpretable model
 
-Efficient training
+---
 
-Works well with sparse TF-IDF features
+## 2️⃣ Multinomial Naive Bayes
 
-Interpretable coefficients
+Naive Bayes is a probabilistic classifier commonly used for text classification tasks.
 
-2️⃣ Multinomial Naive Bayes
+**Advantages**
 
-Naive Bayes is a probabilistic classifier widely used for text classification tasks.
+- Extremely fast
+- Performs well on bag-of-words features
+- Simple yet effective baseline
 
-Advantages:
+However, the independence assumption between features may limit performance.
 
-Extremely fast
+---
 
-Performs well with bag-of-words features
+## 3️⃣ LightGBM (Final Model)
 
-Strong baseline for NLP problems
+LightGBM is a gradient boosting algorithm based on decision trees.
 
-However, it assumes feature independence, which can limit performance.
+**Advantages**
 
-3️⃣ LightGBM (Final Model)
+- Efficient handling of large feature spaces
+- Captures nonlinear relationships
+- High predictive performance
 
-LightGBM is a gradient boosting algorithm that builds an ensemble of decision trees.
+LightGBM achieved the best results among all models tested.
 
-Advantages:
+---
 
-Handles large feature spaces efficiently
+# 📈 Model Evaluation
 
-Captures nonlinear interactions between features
+Model performance was evaluated using **Macro F1-score**.
 
-Works well with mixed feature types
+### Why Macro F1?
 
-LightGBM demonstrated the best performance among all models tested.
+Because the dataset is imbalanced, accuracy alone would not be reliable.  
+Macro F1-score evaluates each class equally and provides a balanced performance metric.
 
-📈 Model Evaluation
-
-Model performance was evaluated using Macro F1-score rather than accuracy.
-
-Why Macro F1?
-
-Because the dataset is imbalanced, accuracy could be misleading.
-Macro F1-score treats each class equally and provides a more reliable evaluation.
-
-Model	Macro F1 Score
-Logistic Regression	~0.66
-Multinomial Naive Bayes	~0.55
-LightGBM	~0.80
+| Model | Macro F1 Score |
+|------|---------------|
+| Logistic Regression | ~0.66 |
+| Multinomial Naive Bayes | ~0.55 |
+| LightGBM | ~0.80 |
 
 LightGBM significantly outperformed the baseline models.
 
-🏆 Final Model Performance
+---
 
-The final LightGBM model was trained on the full training dataset and used to generate predictions for the Kaggle competition.
+# 🏆 Final Model Performance
 
-Kaggle Leaderboard Score:
-⭐ 0.82155
+The final LightGBM model was trained on the entire training dataset and used to generate predictions for the Kaggle competition.
 
-This score successfully exceeded the project cutoff requirement of 0.80, making the submission eligible for viva evaluation.
+**Kaggle Leaderboard Score**
 
-🛠 Technologies Used
+⭐ **0.82155**
+
+This score successfully exceeds the required cutoff score of **0.80**, making the project eligible for the viva evaluation stage.
+
+---
+
+# 🛠 Technologies Used
 
 The project was implemented using the following tools and libraries:
 
-Python
+- **Python**
+- **Pandas**
+- **NumPy**
+- **Scikit-learn**
+- **LightGBM**
+- **Matplotlib**
+- **Seaborn**
+- **SciPy**
 
-Pandas
+All experiments were conducted using **Kaggle Notebooks**.
 
-NumPy
+---
 
-Scikit-learn
-
-LightGBM
-
-Matplotlib
-
-Seaborn
-
-SciPy
-
-The experiments were conducted using Kaggle Notebooks.
-
-📁 Repository Structure
-MLP-Project-t12026/
+# 📁 Repository Structure
+MLP-Project-t12026
 │
 ├── FinalNotebook.ipynb
 ├── README.md
-└── submission files
-🎓 Learning Outcomes
 
-Through this project, the following machine learning concepts were explored:
 
-Text preprocessing and normalization
+---
 
-Feature engineering for tabular data
+# 🎓 Learning Outcomes
 
-TF-IDF vectorization
+This project provided practical experience in several important machine learning concepts:
 
-Model comparison and evaluation
+- Text preprocessing and normalization
+- Feature engineering for tabular data
+- TF-IDF feature extraction
+- Model comparison and evaluation
+- Handling imbalanced datasets
+- Gradient boosting algorithms
+- Building complete machine learning pipelines
 
-Handling imbalanced datasets
+---
 
-Gradient boosting models
+# 🙌 Acknowledgements
 
-Practical machine learning workflows
+This project was completed as part of the **Machine Learning Practice Project course** in the **IIT Madras BS Degree in Data Science and Applications** program.
 
-🙌 Acknowledgements
+---
 
-This project was completed as part of the Machine Learning Practice Project course in the IIT Madras BS Degree in Data Science and Applications program.
+# 👨‍💻 Author
 
-👨‍💻 Author
-
-Muhammad Bilal
-IIT Madras BS Degree – Data Science
+**Muhammad Bilal**  
+IIT Madras BS Degree – Data Science  
 Machine Learning Practice Project (t12026)
+
+
+
+
+
